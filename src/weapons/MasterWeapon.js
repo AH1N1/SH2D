@@ -52,7 +52,7 @@ class MasterWeapon extends Phaser.GameObjects.Sprite {
 
     fire() {
         //test twoerzenia bullet
-        this.pb.
+        //this.pb.
 
         if (this.canShot && this.isReady) {
             if (this.ammo.amount <= 0) {

@@ -1,0 +1,66 @@
+http://labs.phaser.io/edit.html?src=src/tweens\tween%20time%20scale.js
+
+=====liczenie kata
+Well you don't really need angles. You could just compare the position of the sprite and the mouse.
+The angle is calculated like this:
+var angle = Math.atan2(mouse y - sprite y, mouse x - sprite x ) * (180/Math.PI);
+Where the sprite coordinates have to be at the center of the sprite
+
+=======
+function fixRotation(rotation) {  return rotation + 1.57079633;} //jesli w radianach chcem,y ustawic twarz do gory
+
+
+
+shoot() {
+		const t = game.phaser.time.now;
+		if (t - this.lastShotAt > this.progSvc.playerStats.rateOfFire.value) {
+			this.lastShotAt = t;
+			this.nShots++;
+			game.audio.playSfx(this.nShots % 2 == 0 ? SFX_TYPES.SHOOT1 : SFX_TYPES.SHOOT2);
+
+			let critRoll = Math.random();
+			let critHit = critRoll < this.progSvc.playerStats.critChance.value;
+			let damage = this.progSvc.playerStats.damage.value;
+
+			damage *= (Math.random()*0.5)+1;
+			if (critHit) {
+				damage *= 2.25;
+			}
+			damage = Math.round(damage);
+
+			this.bullets.push(new PlayerBullet(this.sprite.position.x, this.sprite.position.y, this.angle, this.group, this.progSvc.playerStats.shotSpeed.value, this.progSvc.playerStats.range.value, damage, this.progSvc.playerStats.accuracy.value, critHit));
+
+			const theta = this.sprite.angle*Math.PI/180 - (Math.PI/2);
+			//this.sprite.body.velocity.x += Math.cos(theta)*-50;
+			//this.sprite.body.velocity.y += Math.sin(theta)*-50;
+		}
+	}
+
+
+	class PlayerBullet {
+    	constructor(x, y, theta, group, shotSpeed, range, damage, accuracy, critHit) {
+    		this.range = range;
+    		this.critHit = critHit;
+    		this.sprite = game.phaser.add.sprite(x, y, "bullet");
+    		this.damage = damage;
+    		this.sprite.anchor.set(0.5);
+    		game.phaser.physics.arcade.enable(this.sprite);
+    		this.sprite.body.setSize(32, 32, 0, 0);
+    		this.dead = false;
+    		this.spawnAt = game.phaser.time.now;
+
+    		theta += (Math.random() - 0.5)*0.3;
+
+    		const c = Math.cos(theta);
+    		const s = Math.sin(theta);
+    		this.sprite.position.x += c*-20;
+    		this.sprite.position.y += s*-20;
+    		this.sprite.body.velocity.x = c*-shotSpeed;
+    		this.sprite.body.velocity.y = s*-shotSpeed;
+
+    		this.sprite.angle = (theta*180/Math.PI) - 90;
+    		game.controller.worldRotGroup.add(this.sprite);
+    		this.group = group;
+    		group.add(this.sprite);
+    		game.utils.effect(this.sprite.position.x, this.sprite.position.y, "muzzleflash", this.group);
+    	}

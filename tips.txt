@@ -24,6 +24,8 @@ bExtendsA.prototype.constructor = bExtendsA;----------- ustawia konstruktor dla 
 
 SCENY:
 this.scene.start('Scene1'); // startuje wybrana scene (wywolywane rowniez na scenie)
+config { key: 'SceneC', active: true }) sprawia ze scena bedzie ustawiona jako aktywna zaraz po stworzeniu - kolejnosc: scene: [ SceneC, SceneB, SceneA ] - ostatniapowstanie sceneA i ona bedzie aktywna
+
 
 TWEENS:
 https://www.youtube.com/watch?v=7cpZ5Y7THmo&t=207s // 30 min

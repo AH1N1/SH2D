@@ -1,4 +1,6 @@
 class Player extends Phaser.GameObjects.Sprite {
+
+
     constructor(config) {
         //Konstruktor , oraz przypisanie sceny i ciala
         super(config.scene.scene, config.scene.x, config.scene.y, config.scene.key);
@@ -17,15 +19,15 @@ class Player extends Phaser.GameObjects.Sprite {
         this.weapon = {
             hasWeapon: config.weapon.hasweapon,
             //weapon: config.weapon.weapon // TODO: pobranie broni z configu- tymczasowo deklarowana z palca
-            weapon: new Pistol({
-                scene: {
-                    scene: this.scene,
-                    x: null,
-                    y: null,
-                    key: 'pistol'
-                },
-                weapon:{}
-            })
+            // weapon: new Pistol({
+            //     scene: {
+            //         scene: this.scene,
+            //         x: null,
+            //         y: null,
+            //         key: 'pistol'
+            //     },
+            //     weapon:{}
+            // })
 
 
         };
@@ -45,11 +47,36 @@ class Player extends Phaser.GameObjects.Sprite {
     };
 
 
+    //Rotation
+    rotateToMouse(pointer) {
+        this.rotation = CONSTANTS.ROTATION_CORRECTION + Phaser.Math.Angle.Between(this.x, this.y, pointer.x + this.scene.cameras.main.scrollX, pointer.y + this.scene.cameras.main.scrollY)
+    }
+
     //Mouse events
     leftClickAction() {
-        if (this.weapon.hasWeapon) {
-            this.weapon.weapon.fire();
-        }
+        //test
+        let bullet = this.scene.matter.add.image(this.x, this.y, 'bullet');
+        let cat1 = this.scene.matter.world.nextCategory();
+        let cat2 = this.scene.matter.world.nextCategory();
+        console.log('collisions');
+        console.log(cat1);
+        console.log(cat2);
+        this.setCollisionCategory(cat1);
+        this.depth=2;
+        bullet.depth=1;
+        bullet.setCollidesWith([2]);
+        bullet.setCollisionCategory(cat2);
+        //bullet.setVelocity(this.scene.pointer.x,this.scene.pointer.y);
+
+        //========================================
+        //https://labs.phaser.io/edit.html?src=src\physics\matterjs\collision%20filter.js
+        //=================
+        //test end
+
+
+        // if (this.weapon.hasWeapon) { :TODO przywroc strzelanie oparte na broni
+        //     this.weapon.weapon.fire();
+        // }
         console.log('left click action');
     }
 

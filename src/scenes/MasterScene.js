@@ -1,13 +1,25 @@
 class MasterScene extends Phaser.Scene {
-
-    config(){
-        this.config();
-    }
     constructor(key) {
+        //Create new scene instance
         super({key: key});
-
+        currentScene=this;
     };
-    preload(){}
+
+    //Load all necessary files
+    //Loaded files are all available to any scene
+    preload(){
+        //Log game config
+        console.log(game.config);
+        console.log(game.device);
+
+
+
+        this.load.setBaseURL('resources');
+        this.load.image('player', '/assets/star.png');
+        this.load.image('bomb', 'assets/bomb.png');
+        this.load.image('bullet', 'assets/bullet.png');
+
+    }
     create() {
         //Create keys for movement
         this.keys = {
@@ -16,9 +28,9 @@ class MasterScene extends Phaser.Scene {
             KEY_A: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             KEY_D: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         };
-
-        //Disable context menu
-        this.input.mouse.disableContextMenu();
+        //Set ccursor
+        this.input.setDefaultCursor('url(resources/assets/crosshair.cur), pointer');
+        this.pointer= game.input.activePointer;
 
         //Add mouse keys events
         this.input.on("pointerdown", function (pointer) {
@@ -100,8 +112,12 @@ class MasterScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        this.player.rotateToMouse(this.pointer);
         //Musi byc jako pierwsze bo zmienia aktualny profil czasu
         this.servePlayerMovement(delta);
+
+        //console.log(game.hasFocus);
+
     }
 
     //Obsluga ruchu gracza- jesli jakis klawisz jest wcisniety, this.time.isRunning = true

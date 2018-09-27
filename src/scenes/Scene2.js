@@ -1,25 +1,14 @@
-//import * as MS from 'MasterScene';
-class Scene1 extends MasterScene {
-
-    config(){
-        console.log('scene1 config');
-    }
+class Scene2 extends MasterScene{
     constructor() {
-        super('Scene1');
-        console.log('in s');
-        console.log(this instanceof MasterScene);
-        console.log(this instanceof Phaser.Scene);
-        //console.log(this.input);
+        //TODO: czy config powinien byc przekazywany z zewnatrz czy definiowany tu
+        const config={};
+
+
+        super('Scene2');
     }
 
     preload() {
-        //Dziedziczenie
         super.preload();
-
-        this.load.image('player', 'resources/assets/star.png');
-        this.load.image('bomb', 'resources/assets/bomb.png');
-        this.load.image('bullet', 'resources/assets/bullet.png');
-        //this.load.sound()
     }
 
     create() {
@@ -67,4 +56,7 @@ class Scene1 extends MasterScene {
         super.update(time,delta);
 
     }
+
+
+
 }

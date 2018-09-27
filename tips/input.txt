@@ -1,0 +1,2 @@
+======INPYT TYLKO DLA SCENY KTORA JEST NA WIERZCHU
+input.globalTopOnly=true //poszukac przykladow, bo nie wiadomo dla kogo wywolywac (this.input???)
