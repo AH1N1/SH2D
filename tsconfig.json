@@ -1,14 +1,14 @@
-{
-  "compilerOptions": {
-    "module": "umd",
-    "target": "es5",
-    "sourceMap": true,
-    "strictNullChecks": true
-  },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "bower_components",
-    "source"
-  ]
-}
+//{
+//  "compilerOptions": {
+//    "module": "umd",
+//    "target": "es5",
+//    "sourceMap": true,
+//    "strictNullChecks": true
+//  },
+//  "exclude": [
+//    "node_modules",
+//    "dist",
+//    "bower_components",
+//    "source"
+//  ]
+//}
