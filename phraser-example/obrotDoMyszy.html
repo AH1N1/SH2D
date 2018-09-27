@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../src/phaser.js"></script>
+</head>
+<body>
+<script>
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        backgroundColor: '#2d2d2d',
+        parent: 'phaser-example',
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+
+    var group;
+    var p;
+
+    function preload ()
+    {
+        this.load.spritesheet('diamonds', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    }
+
+    function create ()
+    {
+        group = this.add.group();
+        angle = this.add.var;
+        angle=0;
+        // for (var i = 0; i < 256; i++)
+        // {
+        group.create(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), 'diamonds', Phaser.Math.Between(0, 4));
+        console.log(group.getChildren().length)
+        // }
+
+        p = new Phaser.Geom.Point(400, 300);
+        this.input.on('pointermove', function (pointer) {
+
+            p.setTo(pointer.x, pointer.y);
+
+        });
+
+        this.input.on('pointermove', function (pointer) {
+            let cursor = pointer;
+            angle = Phaser.Math.Angle.Between(player.x, player.y, cursor.x + this.cameras.main.scrollX, cursor.y + this.cameras.main.scrollY)
+        });
+    }
+
+    function update ()
+    {
+        rotateObject(angle);
+        //Phaser.Actions.RotateAroundDistance(group.getChildren(), p, 0.2, 10);
+        // Phaser.Actions.Rotate(group.getChildren(), 0.1);
+        //Phaser.Actions.RotateAround(group.getChildren(), p, 0.5);
+    }
+
+    function rotateObject(angle){
+
+
+        //player.rotation = game.physics.arcade.angleToPointer(sprite);
+
+        player.rotation = angle;
+        // var direction;
+        // if(player.x < p.x) direction=0.1;
+        // else direction=-0.1;
+        // direction=0;
+        // Phaser.Actions.Rotate(group.getChildren(), direction);
+        //console.log("g.x="+ player.x);
+        //console.log("p.x="+ p.x);
+        // console.log(direction);
+    }
+</script>
+</body>
+</html>

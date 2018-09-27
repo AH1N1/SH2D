@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SH2D</title>
+    <script src="phaser.js"></script>
+    <script src="tests.js"></script>
+    <script src="weapons/MastrerWeapon.js"></script>
+    <script src="player/Player.js"></script>
+    <script src="scenes/MasterScene.js"></script>
+    <script src="scenes/scenesScripts.js"></script>
+    <script src="scenes/scene1.js"></script>
+    <script src="configs/config.js"></script>
+
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            text-align: center;
+        }
+
+        #game-container {
+            /*width: 1000px;*/
+            /*background-color: aqua;*/
+            display: inline-block;
+            margin: auto;
+            /*cursor: url(resources/assets/crosshair.cur), pointer;*/
+        }
+    </style>
+</head>
+<body>
+<div id="game-container" class="game" oncontextmenu="return false;">
+    <script>
+        //Add debug text
+        var log;
+        var dbgtext;
+        var playerObject;
+        // var player={
+        //     leftClickAction(){
+        //         console.log('left click action');
+        //     },
+        //     rightClickAction(){
+        //         console.log('right click action');
+        //     }
+        // };
+        //Initialize game
+        var game = new Phaser.Game(config);
+
+
+    </script>
+</div>
+</body>
+</html>

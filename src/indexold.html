@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="phaser.js"></script>
+    <script src="player/playerScripts.mjs"></script>
+    <script src="weapons/bullet.mjs"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            text-align: center;
+        }
+
+        #game-container {
+            /*width: 1000px;*/
+            /*background-color: aqua;*/
+            display: inline-block;
+            margin: auto;
+            /*cursor: url(resources/assets/crosshair.cur), pointer;*/
+        }
+    </style>
+</head>
+<body>
+<div id="game-container" class="game" oncontextmenu="return false;">
+    <script>
+        document.getElementById("game-container");
+        //Configuration json
+        var sceneConfigMulti = {
+            key: 'sceneA',
+            preload: preload,
+            create: create,
+            physics: {
+                arcade: {
+                    gravity: 500
+                },
+                impact: {
+                    gravity: 100,
+                    debugBodyColor: 0xffff00,
+                    setBounds: {
+                        x: 100,
+                        y: 100,
+                        width: 600,
+                        height: 300,
+                        thickness: 32
+                    }
+                }
+            }
+        };
+
+        var sceneConfig = {
+            key: 'sceneA',
+            preload: preload,
+            create: create,
+            update: update,
+            physics: {
+                system: 'impact',
+                gravity: 100,
+                debugBodyColor: 0xffff00,
+                setBounds: {
+                    x: 100,
+                    y: 100,
+                    width: 600,
+                    height: 300,
+                    thickness: 32
+                }
+            }
+        };
+
+        var config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            backgroundColor: '#2d2d2d',
+            parent: 'game-container',
+            physics: {
+                default: 'impact',
+                impact: {
+                    //gravity: { y: 300 },
+                    debug: true
+                }
+            },
+            //scene: sceneConfig
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+
+
+        var config2 = {
+            type: Phaser.WEBGL,
+            width: 800,
+            height: 600,
+            parent: 'phaser-example',
+            physics: {
+                default: 'impact',
+                impact: {
+                    gravity: 500,
+                    debug: true,
+                    maxVelocity: 500,
+                    debugBodyColor: 0xff00ff
+                }
+            },
+            scene: sceneConfig
+        };
+
+        //Global variables declaration
+
+
+        //var group;
+        var p;
+        var player;
+        var angle;
+        var cursors;
+        var playerManager;
+        var scene;
+        var pointer;
+        var bullet;
+
+        //Initialize game
+        var game = new Phaser.Game(config);
+
+
+        //whis wewnatrz bloku preload to Scene(obecna scena)
+        //Load all assets
+        function preload() {
+            this.load.image('player', 'resources/assets/star.png');
+        }
+
+        //whis wewnatrz bloku create to Scene(obecna scena)
+        function create() {
+            //ustawia rozmiar swiata
+            this.physics.world.setBounds(0, 0, 800 * 4, 600 * 4);
+
+
+
+            this.physics.add.sprite(new ExtendTest(this, 264, 250));
+            // Phaser.Input.Mouse.disableContextMenu(); //this.input.mouse.disable()
+            //group = this.add.group();
+            this.input.setDefaultCursor('url(resources/assets/crosshair.cur), pointer');
+
+            //Initialize all values
+            player = this.physics.add.sprite(100, 100, 'player');
+            player.setCollideWorldBounds(true);
+            playerManager = new PlayerManeger();
+            pointer = game.input.activePointer;
+            scene = game.scene.scenes[0];
+            console.log("scene");
+            console.log(scene);
+            cursors = this.input.keyboard.createCursorKeys();
+            bullet= new Bullet(scene, 200, 200);
+            //player.anchor.setTo(0.5,0.5);
+            //angle=1;
+
+            this.physics.add.existing(bullet);
+            this.add.existing(bullet);
+            this.physics.add.collider(player, bullet);
+            //Handle events
+            this.input.on('pointermove', function (pointer, player) {
+                playerManager.countPlayerAndMouseAngle(this, player, pointer);
+            });
+            //Emxample of once only caught event
+            this.input.once("a", function () {
+                console.log("a");
+            });
+            this.input.on("pointerdown", function (pointer) {
+                if (pointer.leftButtonDown()) console.log("left");
+                if (pointer.rightButtonDown()) console.log("right");
+            });
+
+
+            // cursors = this.input.keyboard.createCursorKeys();
+            // for (var i = 0; i < 256; i++)
+            // {
+            //group.create(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), 'player', Phaser.Math.Between(0, 4));
+            //console.log(group.getChildren().length);
+            // }
+
+            //p = new Phaser.Geom.Point(400, 300);
+            console.log(game);
+            console.log(this);
+            console.log(this.input.on);
+
+            // this.input.on('pointermove', function (pointer) {
+            //     p.setTo(pointer.x, pointer.y);
+            //
+            // });
+            console.log("event: ");
+            console.log(this);
+            //console.log(scene);
+
+
+            // this.input.on('keydown', function (pointer) {
+            //     console.log(this);
+            //     let cursor = pointer;
+            //     angle = Phaser.Math.Angle.Between(player.x, player.y, cursor.x + this.cameras.main.scrollX, cursor.y + this.cameras.main.scrollY);
+            //     countAngle(pointer,this);
+            // });
+
+            //this.input.on('pointermove', countAngle(pointer,this));
+        }
+
+        //whis wewnatrz bloku update to Scene(obecna scena)
+        function update() {
+            playerManager.movePlayer(player, cursors);
+            playerManager.rotatePlayerToMouse(this, player, pointer);
+
+            // if (pointer.justDown) scene.input.emit("left-click");
+            //if (pointer.rightButton.justDown) scene.input.emit("right-click");
+
+
+            // console.log(game.input.activePointer.x);
+
+            // rotateObject(playerManager.countPlayerAndMouseAngle(game.scene.scenes[0], player,pointer));
+            // rotateObject(angle);
+            //Phaser.Actions.RotateAroundDistance(group.getChildren(), p, 0.2, 10);
+            // Phaser.Actions.Rotate(group.getChildren(), 0.1);
+            //Phaser.Actions.RotateAround(group.getChildren(), p, 0.5);
+        }
+        class ExtendTest extends Phaser.GameObjects.Sprite{
+            constructor (scene, x, y)
+            {
+                super(scene, x, y);
+
+                this.setTexture('player');
+                this.setPosition(x, y);
+            }
+
+            preUpdate (time, delta)
+            {
+                super.preUpdate(time, delta);
+
+                //console.log("pre");
+                //this.rotation += 0.01;
+            }
+
+            update ()
+            {
+                super.preUpdate(time, delta);
+                console.log("upd");
+                this.rotation += 0.01;
+            }
+
+        }
+
+
+
+
+    </script>
+</div>
+</body>
+</html>

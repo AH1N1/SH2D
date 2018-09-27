@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "../dist",
+    "module": "umd",
+    "target": "es5",
+    "sourceMap": true,
+    "strictNullChecks": true
+  }
+}

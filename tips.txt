@@ -1,0 +1,38 @@
+EVENTS: dodawac na obiekcie nie na scenie
+pointerover //najechanie
+pointerout  //mysz poza
+pointerup   //odklikniecie
+pointerdown //klikniecie
+gameobjectdown //klikniecie na obiekt this.input.on('gameobjectdown', function (pointer, gameObject){})
+gameobjectmove //najechanie na obiekt
+
+GRUPY:
+this.weapons[this.currentWeapon].setAll('exists', false); //usuwa wszystkie obiekty z grupy
+
+PROTOTYPE:
+var a = function(){
+    this.a='a';
+}
+
+var bExtendsA = function(b){
+    a.call(this);-------------------------------------- dziedziczy wszystkie pola i metody zadeklarowane w ciele obiektu a
+    this.b=b;
+}
+
+bExtendsA.prototype=Object.create(a.prototype);-------- dziedziczy wszystkie pola i metody z a.prototype
+bExtendsA.prototype.constructor = bExtendsA;----------- ustawia konstruktor dla bExtendsA na jego samego- czyli metode
+
+SCENY:
+this.scene.start('Scene1'); // startuje wybrana scene (wywolywane rowniez na scenie)
+
+TWEENS:
+https://www.youtube.com/watch?v=7cpZ5Y7THmo&t=207s // 30 min
+
+SOUND:
+//w preload
+this.load.audio('audio', ['sound.mp3']);
+//w update
+this.mySound= this.sound.add('audio',{loop:'true'}) //dodaje
+this.myAudio.play()
+this.myAudio.pause() // pauzuje w srodku a play wznawia
+this.myAudio.rate= 0.5; //spowalnia
