@@ -16,16 +16,33 @@ class Player extends Phaser.GameObjects.Sprite {
         //Set weapon
         this.weapon = {
             hasWeapon: config.weapon.hasweapon,
-            weapon: config.weapon.weapon
+            //weapon: config.weapon.weapon // TODO: pobranie broni z configu- tymczasowo deklarowana z palca
+            weapon: new Pistol({
+                scene: {
+                    scene: this.scene,
+                    x: null,
+                    y: null,
+                    key: 'pistol'
+                },
+                weapon:{}
+            })
+
+
         };
 
         //event test
         this.setInteractive();
-        this.on('clicked', function(){console.log('player clicked')}, this);
+        this.on('clicked', function () {
+            console.log('player clicked')
+        }, this);
 
         console.log(this.weapon.weapon);
-    };
 
+        //toJSON test
+        console.log('player to json');
+        console.log(this.toJSON());
+        //console.log(this.toJSON());
+    };
 
 
     //Mouse events

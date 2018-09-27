@@ -1,10 +1,13 @@
 class MasterScene extends Phaser.Scene {
+
+    config(){
+        this.config();
+    }
     constructor(key) {
         super({key: key});
 
-
     };
-
+    preload(){}
     create() {
         //Create keys for movement
         this.keys = {
@@ -60,7 +63,7 @@ class MasterScene extends Phaser.Scene {
                 weapon: new MasterWeapon({
                     scene: {
                         scene: this,
-                        key: 'bomb',
+                        key: 'bullet',
                         x: 125,
                         y: 100
                     },

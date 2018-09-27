@@ -1,29 +1,49 @@
-class Bullet extends Phaser.GameObjects.Sprite {
+class MasterBullet extends Phaser.GameObjects.Sprite {
 
-    constructor (scene, x, y)
-    {
-        super(scene, x, y);
+    constructor(config) {
+        super(config.scene.scene, config.scene.x, config.scene.y, config.scene.key);
+        this.scene = config.scene.scene;
+        //Ponizsze niepotrzebne -dodajemy do sceny dopiero przy momencie wystrzalu
+        // this.scene.add.existing(this);
+        // this.scene.matter.add.gameObject(this);
 
-        this.setTexture('player');
-        this.setPosition(x, y);
+        //Dodaj kierunek w ktorym bedzie wystrzelona
+        // this.direction={
+        //     x:null,
+        //     y:null
+        // };
+
+        // this.speed=
+
+    }
+    fire(config){
+        //Set creation point
+        this.setPosition(config.source.x, this.source.y);
+
+
+        //Add to scene
+        this.setActive(true);
+        this.setVisible(true);
 
     }
 
-    preUpdate (time, delta)
-    {
-        super.preUpdate(time, delta);
 
-        this.rotation += 0.01;
-    }
+    update(time, delta){
+        //test poruszania :TODO : dodaj poruszanie na zasadzie predkosc w kierunku w ktorym byla mysz podczas wystrzalu
+        this.y -= this.speed * delta;
 
-    update(){
-        console.log("updated bullet")
     }
+    // preUpdate(time, delta) {
+    //     super.preUpdate(time, delta);
+    //
+    //     this.rotation += 0.01;
+    // }
+    //
+    // update() {
+    //     console.log("updated bullet")
+    // }
 
 }
-
-
-
 
 
 // var Bullet = function (game, key) {

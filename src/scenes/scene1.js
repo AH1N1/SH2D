@@ -1,5 +1,9 @@
 //import * as MS from 'MasterScene';
 class Scene1 extends MasterScene {
+
+    config(){
+        console.log('scene1 config');
+    }
     constructor() {
         super('Scene1');
         console.log('in s');
@@ -9,8 +13,12 @@ class Scene1 extends MasterScene {
     }
 
     preload() {
+        //Dziedziczenie
+        super.preload();
+
         this.load.image('player', 'resources/assets/star.png');
         this.load.image('bomb', 'resources/assets/bomb.png');
+        this.load.image('bullet', 'resources/assets/bullet.png');
         //this.load.sound()
     }
 
