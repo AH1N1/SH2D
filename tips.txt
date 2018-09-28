@@ -23,8 +23,101 @@ bExtendsA.prototype=Object.create(a.prototype);-------- dziedziczy wszystkie pol
 bExtendsA.prototype.constructor = bExtendsA;----------- ustawia konstruktor dla bExtendsA na jego samego- czyli metode
 
 SCENY:
+---------proces tworzenia:
+- obiekt musi miec przynajmniej metode create
+- musi dostac co najmniej key albo caly config:
+    {
+    key:'key',  //klucz
+    active: true,  //sprawia ze scena bedzie ustawiona jako aktywna zaraz po stworzeniu
+    physics:{   //scena moze miec wlasna fizyke
+            matter:{
+                debug:true,
+                gravity:{x:0, y:0}
+                    }
+            },
+    files:[{type:'image', key:'progressBar', url:'bar.jpg'}]  //wczytuje pliki jeszcze przed metoda preload() sceny- tylko dla plikow ktore musza byc jeszcze przed jej wczytaniem,
+    plugins:['Loader', 'TweeenManager'], //czysta tablica czysci pluginy defaultowe, jesli chcemy tylko kilka z nich wpisujemy jak w przykladzie
+    map:{add:'dodawacz'} //nadaje nazwy poszczegolnym pluginom, pusta czysci wszystkie nazwy, a niepelna zmienia nazwe tylko tym wymienionym
+    }
+- key sceny musi zostac przekazany do configu gry // musi? czy mozna go dodac pozniej?
+    scene:nazwaObiekuRozszerzajacegoScene //nie po kluczu tylko po nazwie obiektu lub klasy
+    scene:[nazwa1, nazwa2] //tworzy po kolei od lewej do prawej
+    -------------------------
+    alternatywnie mozna stworzyc scene bezposrednio w configu gry:
+    var gameconfig={scene:{preload:preloadInsideObject, update:updateInsideObject}}
+    ktory mowi ze metoda 'updateInObject' bedzie metoda update stworzonej sceny itp.
+    wtedy w obiekcie w ktorym jest config(albo stworzenie gry- sprawdzic) musi znajdowac sie metoda 'updateInObject'
+    ------------------------
+
+
+---------uruchamianie sceny:
 this.scene.start('Scene1'); // startuje wybrana scene (wywolywane rowniez na scenie)
 config { key: 'SceneC', active: true }) sprawia ze scena bedzie ustawiona jako aktywna zaraz po stworzeniu - kolejnosc: scene: [ SceneC, SceneB, SceneA ] - ostatniapowstanie sceneA i ona bedzie aktywna
+
+---------dostep do innej sceny:
+var scene2 =this.scene.get('kluczSceny') //pobiera scene po jej kluczu
+scene2.scene2PublicMethod()
+
+---------dostep do dataManegera
+this.regitry.set('a', this.a) //ustawia globalna wartosc dostepna dla wszystkich scen
+this.registry.on('changedata') // reaguje na zmiany wartosci
+this.registry.get('a')  //zwraca wartosc
+
+---------event sceny
+this.events.emit('scene1Event') // emitowanie w 1 scenie
+game.events.on('scene1Event',f(){},this) //obsluga eventu
+
+---------scene.sys (plugins)
+obiekt ktory zawiera wszystkie pluginy obowiazkowe:
+▪ An Event Emitter
+▪ The 2D Camera Manager
+▪ The Game Object Creator
+▪ The Game Object Factory
+▪ The Scene Plugin
+▪ The Display List
+▪ The Update List
+
+ktore sa dostepne pod nazwami:
+'anims' = Animation Manager (Global)
+'cache' = Cache (Global)
+'game' = Phaser.Game instance (Global)
+'registry' = Game Data Manager (Global)
+'sound' = Sound Manager (Global)
+'textures' = Texture Manager (Global)
+'add' = Game Object Factory (Local, Core)
+'cameras' = 2D Camera Manager (Local, Core)
+'children' = Display List (Local, Core)
+'events' = Event Emitter (Local, Core)
+'make' = Game Object Creator (Local, Core)
+'scene' = Scene Manager Plugin (Local, Core)
+
+oraz kilka defaultowych nieobowiazkowych:
+▪ The 3D Camera Manager
+▪ The Clock
+▪ The Data Manager Plugin
+▪ The Input Plugin
+▪ The Loader Plugin
+▪ The Tween Manager
+▪ The Lights Plugin
+
+dostepnych jako:
+'cameras3d' = 3D Camera Manager (Local, Optional)
+'data' = Scene Data Manager (Local, Optional)
+'impact' = Impact Physics (Local, Optional)
+'input' = Input Plugin (Local, Optional)
+'lights' = Lights Manager Plugin (Local, Optional)
+'load' = Loader Plugin (Local, Optional)
+'matter' = Matter JS Physics (Local, Optional)
+'physics' = Arcade Physics (Local, Optional)
+'time' = Time / Clock Plugin (Local, Optional)
+'tweens' = Tween Manager (Local, Optional)
+
+zeby usunac pluginy defaultowe nalezy przekazac pusta tablice pluginow: plugins:[] w configu
+zeby zainstalowac jakis juz po stworzeniu sceny uzywamy w obiekcie sceny metody: init(){this.sys.install('Loader')}
+
+
+
+
 
 
 TWEENS:

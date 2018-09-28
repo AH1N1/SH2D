@@ -1,8 +1,8 @@
 class MasterScene extends Phaser.Scene {
-    constructor(key) {
+    constructor(config) {
         //Create new scene instance
-        super({key: key});
-        currentScene=this;
+        super({key: config.key});
+        //currentScene=this;
     };
 
     //Load all necessary files
@@ -12,8 +12,8 @@ class MasterScene extends Phaser.Scene {
         console.log(game.config);
         console.log(game.device);
 
-
-
+        //Load all necessary files
+        //Loaded files are all available to any scene
         this.load.setBaseURL('resources');
         this.load.image('player', '/assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');

@@ -9,7 +9,7 @@ var config = {
             debug: true
         }
     },
-    scene: [Scene2],
+    scene: [SceneWithConfig],
     disableContextMenu:true,
     backgroundColor:'#516b46',
     title:'SH2D'
