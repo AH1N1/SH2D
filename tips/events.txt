@@ -1,0 +1,11 @@
+----------sprawzanie: w kodzie phasera szukac po nazwie eventu
+
+
+----------dodanie eventu do obiektu
+this.someImage.setInteractive();  //bez tego obiekt nie bedzie emitowal eventow
+this.someImage.on('pointerdown', function (pointer, x, y, gameObject) {},this); //poiter zawiera kamere, x i y pozycja myszy liczac od lewego gorenego rogu obiektu w ktory kliknieto(patrz getBounds())
+
+----------kolejnosc eventow
+gameObject - pointerdown
+scene.input - gameobjectdown
+scene.input - pointerdown

@@ -1,0 +1,176 @@
+==================================
+https://github.com/jdotrjs/phaser-guides/blob/master/Basics/Part3.md
+==================================
+
+
+
+---------proces tworzenia:
+- obiekt musi miec przynajmniej metode create
+- musi dostac co najmniej key albo caly config:
+    {
+    key:'key',  //klucz
+    active: true,  //sprawia ze scena bedzie ustawiona jako aktywna zaraz po stworzeniu
+    physics:{   //scena moze miec wlasna fizyke
+            matter:{
+                debug:true,
+                gravity:{x:0, y:0}
+                    }
+            },
+    files:[{type:'image', key:'progressBar', url:'bar.jpg'}]  //wczytuje pliki jeszcze przed metoda preload() sceny- tylko dla plikow ktore musza byc jeszcze przed jej wczytaniem,
+    plugins:['Loader', 'TweeenManager'], //czysta tablica czysci pluginy defaultowe, jesli chcemy tylko kilka z nich wpisujemy jak w przykladzie
+    map:{add:'dodawacz'} //nadaje nazwy poszczegolnym pluginom, pusta czysci wszystkie nazwy, a niepelna zmienia nazwe tylko tym wymienionym
+    }
+- key sceny musi zostac przekazany do configu gry // musi? czy mozna go dodac pozniej?
+    scene:nazwaObiekuRozszerzajacegoScene //nie po kluczu tylko po nazwie obiektu lub klasy
+    scene:[nazwa1, nazwa2] //tworzy po kolei od lewej do prawej
+    -------------------------
+    alternatywnie mozna stworzyc scene bezposrednio w configu gry:
+    var gameconfig={scene:{preload:preloadInsideObject, update:updateInsideObject}}
+    ktory mowi ze metoda 'updateInObject' bedzie metoda update stworzonej sceny itp.
+    wtedy w obiekcie w ktorym jest config(albo stworzenie gry- sprawdzic) musi znajdowac sie metoda 'updateInObject'
+    ------------------------
+
+
+---------dodawanie nowej sceny podczas dzialania programu
+let key='scena'
+let scene = new Scene(key)
+this.scene.add(key,scena,true) //true sprawia ze scena zostanie od razu uruchomiona
+
+---------uruchamianie sceny:
+this.scene.start('Scene1'); // startuje wybrana scene (wywolywane rowniez na scenie)
+config { key: 'SceneC', active: true }) sprawia ze scena bedzie ustawiona jako aktywna zaraz po stworzeniu - kolejnosc: scene: [ SceneC, SceneB, SceneA ] - ostatniapowstanie sceneA i ona bedzie aktywna
+
+---------dostep do innej sceny:
+var scene2 =this.scene.get('kluczSceny') //pobiera scene po jej kluczu
+scene2.scene2PublicMethod()
+
+---------dostep do dataManegera
+this.regitry.set('a', this.a) //ustawia globalna wartosc dostepna dla wszystkich scen
+this.registry.on('changedata') // reaguje na zmiany wartosci
+this.registry.get('a')  //zwraca wartosc
+
+---------event sceny
+this.events.emit('scene1Event') // emitowanie w 1 scenie
+game.events.on('scene1Event',f(){},this) //obsluga eventu
+
+---------scene.sys (plugins)
+obiekt ktory zawiera wszystkie pluginy obowiazkowe:
+▪ An Event Emitter
+▪ The 2D Camera Manager
+▪ The Game Object Creator
+▪ The Game Object Factory
+▪ The Scene Plugin
+▪ The Display List
+▪ The Update List
+
+ktore sa dostepne pod nazwami:
+'anims' = Animation Manager (Global)
+'cache' = Cache (Global)
+'game' = Phaser.Game instance (Global)
+'registry' = Game Data Manager (Global)
+'sound' = Sound Manager (Global)
+'textures' = Texture Manager (Global)
+'add' = Game Object Factory (Local, Core)
+'cameras' = 2D Camera Manager (Local, Core)
+'children' = Display List (Local, Core)
+'events' = Event Emitter (Local, Core)
+'make' = Game Object Creator (Local, Core)
+'scene' = Scene Manager Plugin (Local, Core)
+
+oraz kilka defaultowych nieobowiazkowych:
+▪ The 3D Camera Manager
+▪ The Clock
+▪ The Data Manager Plugin
+▪ The Input Plugin
+▪ The Loader Plugin
+▪ The Tween Manager
+▪ The Lights Plugin
+
+dostepnych jako:
+'cameras3d' = 3D Camera Manager (Local, Optional)
+'data' = Scene Data Manager (Local, Optional)
+'impact' = Impact Physics (Local, Optional)
+'input' = Input Plugin (Local, Optional)
+'lights' = Lights Manager Plugin (Local, Optional)
+'load' = Loader Plugin (Local, Optional)
+'matter' = Matter JS Physics (Local, Optional)
+'physics' = Arcade Physics (Local, Optional)
+'time' = Time / Clock Plugin (Local, Optional)
+'tweens' = Tween Manager (Local, Optional)
+
+zeby usunac pluginy defaultowe nalezy przekazac pusta tablice pluginow: plugins:[] w configu
+zeby zainstalowac jakis juz po stworzeniu sceny uzywamy w obiekcie sceny metody: init(){this.sys.install('Loader')}
+
+-----------kolejnosc scen
+this.input.setGlobalTopOnly(false)  //input dziala na wszystkie sceny a nie tylko na topowa
+this.scene. -> //brak klucza sceny, lub konkretnej instancji jako parametr sprawia, ze metoda dziiala na scene z ktorej jest wywolywana
+bringToTop()   //przesuwa na sama gore
+sendToBack('scene2')   //przesuwa na sam dol
+moveUp(referencjaDoSceny)
+moveDown()
+moveAbove('taPonizej', 'taPowyzej')  //przsuwa jedna nad 2
+moveBelow()
+
+
+----------tworzenie/dodawanie obiektow
+this.add.[klasaObiektu]([args]) // dodaje od razu
+var img = new Phaser.GameObjects.Image(this, ctrX, ctrY + 0.25 * bgHeight, 'btn'); //tworzy obiekt ale nie dodaje go do sceny
+this.add.existing(img) // dodaje istniejacy obiekt do sceny
+this.children.add(img) // dodaje do listy obiektow ktore beda renderowane przy kazdym framie (plugin)
+this.make.[klasaObiektu](config, addToScene) // tworzy obiekt lub wiele obiektow z cofigu. addToScene- czy dodac od rtazau do sceny (plugin)
+    https://labs.phaser.io/edit.html?src=src\game%20objects\images\make%20image%20from%20config.js // przyklady configow dla image
+
+----------transistions
+* This Scene can either be sent to sleep at the end of the transition, or stopped. The default is to stop.
+     *
+     * There are also 5 transition related events: This scene will emit the event `transitionto` when
+     * the transition begins, which is typically the frame after calling this method.
+     *
+     * The target Scene will emit the event `transitioninit` when that Scene's `init` method is called.
+     * It will then emit the event `transitionstart` when its `create` method is called.
+     * If the Scene was sleeping and has been woken up, it will emit the event `transitionwake` instead of these two,
+     * as the Scenes `init` and `create` methods are not invoked when a sleep wakes up.
+     *
+     * When the duration of the transition has elapsed it will emit the event `transitioncomplete`.
+     * These events are all cleared of listeners when the Scene shuts down, but not if it is sent to sleep.
+
+Hi :) I came across a weird behavior of keys events/scenes while pausing a scene inside the 'keydown' eventhandler.
+Code like below makes event 'keyup_ESC' not being emited after going back to sceneA.
+
+imo above code should work like that :
+-ESC pressed in sceneA
+-log 'key down in sceneA', pause sceneA, run sceneB
+-ESC up
+-log 'key up in sceneB'
+-ESC pressed in sceneB
+-log 'key down in sceneB', pause sceneB, run sceneA
+-ESC up
+-log 'key up in sceneA'
+
+
+but what happens is:
+
+-ESC pressed in sceneA
+-log 'key down in sceneA', pause sceneA, run sceneB
+-ESC up
+-log 'key up in sceneB'
+-ESC pressed in sceneB
+-log - key down in sceneB, pause sceneB, run sceneA - that calls sceneA init() and create() methods(why? sceneA was paused)
+-ESC up
+-no log shows in sceneA,  ESC key's 'isDown' property equals true (???)
+-ESC pressed in sceneA
+-no log for 'keydown' event
+-ESC up
+-log 'key up in sceneB'
+
+Can anyone pls tell me what actually happened and why?
+I might not properly understand the way SceneManager works, but I'm preety sure it's not what should happen ;)
+
+what i understand is happening:
+-pressed ESC while in sceneA
+-'keydown_ESC' was emited
+-sceneA handles event - stops itself and runs sceneB
+-sceneB
+
+causes event 'keyup_ESC' can be handled only by sceneB and then if ESC is being pressed again it emites 'keydown_ESC' event that is also handled by sceneB,
+BUT 'keyup_ESC' isnt
