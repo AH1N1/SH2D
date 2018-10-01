@@ -1,57 +1,48 @@
+
+
+
+//:TODO 1-  obsluz przytrzymanie przycisku ESC- nie powinnotworzyc kolejnych eventow
 class Lvl1 extends Phaser.Scene {
 
     constructor() {
-        super({key: 'lvl1', active: true});
-        console.log('lvl1 constructed');
+        super({key: 'lvl1'/*, active: true*/});
     }
 
     init(){
-        console.log('lvl1 init');
+
+    }
+
+    preload(){
+        this.load.image('play', 'resources/assets/play.png');
     }
 
     create() {
-        console.log('lvl1 created');
+        //test alpha
+        this.a = this.add.image(100,100,'play');// = new Phaser.GameObjects.Image(this, 0, -bounds.height / 4, 'btn');//  bounds.y + bounds.height / 8
+
 
         //Create keys
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        console.log(this.escKey);
 
-        //On resume listener test
+        //Add listeners
+        //Resume listener
         this.events.on('resume', function () {
-            console.log('lvl1 resumed');
             console.log(this.escKey);
             this.escKey.reset();
         },this);
 
-        this.events.on('start', function () {
-            console.log('lvl1 started');
-            this.escKey.reset();
-        },this);
-
-        //Add listeners
+        //Keyboard listeners
         this.input.keyboard.on('keydown_ESC', function (key) {
             console.log('esc down');
-            // this.input.emit('keyup_ESC', this);
             this.showMainMenu();
-        }, this);
-
-        this.input.keyboard.on('keyup_ESC', function (event) {
-            console.log('lvl1 esc up');
-            // this.showMainMenu();
         }, this);
     }
 
     update(time, delta) {
-        //Escape key event to call menu
-        //this.handleEsc();
-        console.log(this.escKey.isDown);
-
-
+        //test alpha
+        this.a.x+=1;
     }
     showMainMenu() {
-        console.log('show menu');
         this.scene.run('menu', this);
-        this.scene.pause(); // ew przenies pauzowanie do menu
-
     }
 }

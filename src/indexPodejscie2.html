@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SH2D</title>
+    <script src="phaser.js"></script>
+    <script src="tests.js"></script>
+    <script src="weapons/MasterBullet.js"></script>
+    <script src="weapons/bullet/PistolBullet.js"></script>
+    <script src="weapons/MasterWeapon.js"></script>
+    <script src="player/Player.js"></script>
+    <script src="scenes/MasterScene.js"></script>
+    <script src="scenes/scenesScripts.js"></script>
+    <script src="scenes/Scene1.js"></script>
+    <script src="scenes/Scene2.js"></script>
+    <script src="scenes/SceneWithConfig.js"></script>
+    <script src="configs/config.js"></script>
+
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            text-align: center;
+        }
+
+        #game-container {
+            /*width: 1000px;*/
+            /*background-color: aqua;*/
+            display: inline-block;
+            margin: auto;
+            /*cursor: url(resources/assets/crosshair.cur), pointer;*/
+        }
+    </style>
+</head>
+<body>
+<div id="game-container" class="game" oncontextmenu="return false;">
+    <script>
+        //Add debug text
+        var log;
+        var dbgtext;
+        var playerObject;
+        // var player={
+        //     leftClickAction(){
+        //         console.log('left click action');
+        //     },
+        //     rightClickAction(){
+        //         console.log('right click action');
+        //     }
+        // };
+        //Initialize game
+        var timeScale;
+        var currentScene;
+
+        const CONSTANTS ={
+            ROTATION_CORRECTION:1.57079633
+            //TODO: ew wynies klawisze tutaj
+        };
+
+        var game = new Phaser.Game(config);
+        console.log(game.config);
+
+
+
+    </script>
+</div>
+</body>
+</html>
