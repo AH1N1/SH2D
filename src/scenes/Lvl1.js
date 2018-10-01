@@ -13,20 +13,20 @@ class Lvl1 extends Phaser.Scene {
         console.log('lvl1 created');
 
         //Create keys
-        this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
-
+        this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        console.log(this.escKey);
 
         //On resume listener test
         this.events.on('resume', function () {
             console.log('lvl1 resumed');
-            console.log(this.scene.isSleeping('lvl1'));
-            console.log(this.scene.isVisible('lvl1'));
-            console.log(this.scene.isActive('lvl1'));
-        },this  );
+            console.log(this.escKey);
+            this.escKey.reset();
+        },this);
 
-        this.events.on('run', function () {
-            console.log('lvl1 runned');
-        });
+        this.events.on('start', function () {
+            console.log('lvl1 started');
+            this.escKey.reset();
+        },this);
 
         //Add listeners
         this.input.keyboard.on('keydown_ESC', function (key) {
@@ -48,11 +48,10 @@ class Lvl1 extends Phaser.Scene {
 
 
     }
-
     showMainMenu() {
         console.log('show menu');
-        this.scene.pause();
         this.scene.run('menu', this);
+        this.scene.pause(); // ew przenies pauzowanie do menu
 
     }
 }

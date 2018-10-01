@@ -38,14 +38,17 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        console.log('menu create');
-        console.log(this.prevScene);
-        console.log(this.scene.isSleeping('lvl1'));
-        console.log(this.scene.isVisible('lvl1'));
-        console.log(this.scene.isActive('lvl1'));
+        // console.log('menu create');
+        // console.log(this.prevScene);
+        // console.log(this.scene.isSleeping('lvl1'));
+        // console.log(this.scene.isVisible('lvl1'));
+        // console.log(this.scene.isActive('lvl1'));
         //------dodaj przyciski
         // //Set scale value that all object will be scaled by
         // let scale= 1;
+
+        //Create keys
+        this.key_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         //Set background
         let camera = this.cameras.main;
@@ -109,11 +112,13 @@ class Menu extends Phaser.Scene {
         //Play listener
         this.play.on('pointerdown', function () { //(pointer, x, y, gameObject)
             if (this.prevScene != null) {
-                console.log('resume');
                 this.resumeScene();
             } else {
-                console.log('play new game');
-                this.scene.run('lvl1');
+                //this.scene.run('lvl1');
+                //
+
+
+
                 // console.log('play clicked');
                 // this.scene.transition({
                 //     target: 'lvl1',
@@ -187,14 +192,6 @@ class Menu extends Phaser.Scene {
     }
 
     resumeScene() {
-        //this.resumePrevScene(null,null, this);
-
-        // this.scene.stop();
-        // console.log(this);
-        // console.log('menu paused');
-        // this.scene.resume(this.prevScene);
-        // console.log('menu runs lvl1');// this.input.emit('keyup_ESC',this.prevScene);
-
         this.tweens.add({
             targets: this.container,
             scaleX: 0,
@@ -206,14 +203,7 @@ class Menu extends Phaser.Scene {
     }
 
     resumePrevScene(tween, target, thisScene) {
-        thisScene.scene.pause();
-        console.log(thisScene);
-        console.log('menu paused');
         thisScene.scene.run(thisScene.prevScene);
-        //thisScene.scene.setActive(true,)=true;
-        console.log('menu runs lvl1');
-        console.log(thisScene.scene.isSleeping('lvl1'));
-        console.log(thisScene.scene.isVisible('lvl1'));
-        console.log(thisScene.scene.isActive('lvl1'));
+        thisScene.scene.pause();
     }
 }
