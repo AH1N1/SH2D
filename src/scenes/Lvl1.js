@@ -14,12 +14,12 @@ class Lvl1 extends Phaser.Scene {
 
     preload(){
         this.load.image('play', 'resources/assets/play.png');
+        this.load.image('someWeapon', 'resources/assets/bomb.png');
     }
 
     create() {
         //test alpha
         this.a = this.add.image(100,100,'play');// = new Phaser.GameObjects.Image(this, 0, -bounds.height / 4, 'btn');//  bounds.y + bounds.height / 8
-
 
         //Create keys
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -36,6 +36,9 @@ class Lvl1 extends Phaser.Scene {
             console.log('esc down');
             this.showMainMenu();
         }, this);
+
+        //Create weapons
+        this.createWeapons();
     }
 
     update(time, delta) {
@@ -44,5 +47,12 @@ class Lvl1 extends Phaser.Scene {
     }
     showMainMenu() {
         this.scene.run('menu', this);
+    }
+    //TODO: przyjmowac config z wymienionymi bronmi, oraz configiem dla kazdej z nich. config broni przekazywc do konstruktorow
+    createWeapons() {
+        this.weapons = this.add.group();
+        this.weapons.add(new SomeWeapon(this), true);
+        console.log(this.weapons);
+
     }
 }
