@@ -8,6 +8,7 @@
     <script src="scenes/Menu.js"></script>
     <script src="scenes/Lvl1.js"></script>
     <script src="weapons/weapon/SomeWeapon.js"></script>
+    <script src="Person.js"></script>
 
     <style>
         html, body {
@@ -30,7 +31,24 @@
 <div id="game-container" class="game">
     <script>
         const CONSTANTS ={
-            ROTATION_CORRECTION:1.57079633
+            ROTATION_CORRECTION:1.57079633,
+
+            SOME_AMMO:{bulletsAmount:1, bulletsType:1, key:'someWeapon'},
+            RIFLE_AMMO:{bulletsAmount:1, bulletsType:1},
+            SHOTGUN_AMMO:{bulletsAmount:5, bulletsType:2},
+            SHURIKEN_AMMO:{bulletsAmount:1, bulletsType:3},
+            AUTO_RIFLE_AMMO:{bulletsAmount:0, bulletsType:1},
+            PISTOL_AMMO:{bulletsAmount:1, bulletsType:1},
+            BURST_RIFLE_AMMO:{bulletsAmount:3, bulletsType:1},
+
+            BULLET_SINGLE:1,
+            BULLET_SHOTGUN:2,
+            BULLET_SHURIKEN:3,
+
+            FIRE_MODE_SINGLE:10,
+            FIRE_MODE_BURST:11,
+            FIRE_MODE_AUTO:12,
+            FIRE_MODE_SPREAD:13,
             //TODO: ew wynies klawisze tutaj
         };
 

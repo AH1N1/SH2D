@@ -1,6 +1,3 @@
-
-
-
 //:TODO 1-  obsluz przytrzymanie przycisku ESC- nie powinnotworzyc kolejnych eventow
 class Lvl1 extends Phaser.Scene {
 
@@ -8,18 +5,18 @@ class Lvl1 extends Phaser.Scene {
         super({key: 'lvl1'/*, active: true*/});
     }
 
-    init(){
+    init() {
 
     }
 
-    preload(){
+    preload() {
         this.load.image('play', 'resources/assets/play.png');
         this.load.image('someWeapon', 'resources/assets/bomb.png');
     }
 
     create() {
         //test alpha
-        this.a = this.add.image(100,100,'play');// = new Phaser.GameObjects.Image(this, 0, -bounds.height / 4, 'btn');//  bounds.y + bounds.height / 8
+        this.a = this.add.image(100, 100, 'play');// = new Phaser.GameObjects.Image(this, 0, -bounds.height / 4, 'btn');//  bounds.y + bounds.height / 8
 
         //Create keys
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -29,7 +26,7 @@ class Lvl1 extends Phaser.Scene {
         this.events.on('resume', function () {
             console.log(this.escKey);
             this.escKey.reset();
-        },this);
+        }, this);
 
         //Keyboard listeners
         this.input.keyboard.on('keydown_ESC', function (key) {
@@ -37,22 +34,56 @@ class Lvl1 extends Phaser.Scene {
             this.showMainMenu();
         }, this);
 
+
+        //Mouse listeners
+
+        //Create player
+        this.player = new Person(this, 30, 500, 'someWeapon');
+        this.add.existing(this.player);
+
+
         //Create weapons
-        this.createWeapons();
+        let wc = [{
+            ammoType: CONSTANTS.SOME_AMMO,
+            ammoAmount: 7,
+            key: 'someWeapon',
+            interactive: true,
+            x: 50,
+            y: 500
+        }];
+        this.createWeapons(wc);
     }
 
     update(time, delta) {
         //test alpha
-        this.a.x+=1;
+        this.a.x += 1;
     }
+
     showMainMenu() {
         this.scene.run('menu', this);
     }
-    //TODO: przyjmowac config z wymienionymi bronmi, oraz configiem dla kazdej z nich. config broni przekazywc do konstruktorow
-    createWeapons() {
-        this.weapons = this.add.group();
-        this.weapons.add(new SomeWeapon(this), true);
-        console.log(this.weapons);
 
+    computeDistance(person, object) {
+        return Phaser.Math.Distance.Between(person.x, person.y, object.x, object.y);
+    }
+
+
+    /**
+     * Dodaje grupę this.weapons
+     * Iteruje po tablicy konfigów i dla każdego z nich tworzy obiekt SomeWeapon na podstawie configu
+     * Dodaje listener do kazdego stworzonego obiektu, który w momencie naciśnięcia PPM w odleglości <=20px od gracza, wykonuje SomeWeapon.pickUp()
+     * Dodaje do grupy stworzony obiekt
+     * */
+    createWeapons(weaponsConfigs) {
+        this.weapons = this.add.group(); //Dodaje grupe
+        weaponsConfigs.forEach(function (wc, index) {  // tworzy bronie wedlug configow
+            let weapon = new SomeWeapon(this, wc);
+            weapon.on('pointerdown', function (event) { //dodaje listener podnoszenia broni
+                if (event.rightButtonDown() && this.computeDistance(this.player, weapon) <= 20) {
+                    weapon.pickUp(this.player);
+                }
+            }, this);
+            this.weapons.add(weapon, true);
+        }, this);
     }
 }
