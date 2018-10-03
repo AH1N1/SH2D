@@ -1,5 +1,8 @@
 /**
  * ZALOZENIA
+ *
+ * ----KLASA UNIWERSALNA- WSZYSTKIEBRONIE BEDA OBIEKTEM TEJ KLASY, ROZNIC SIE BEDA TYLKO PRZEKAZANYM CONFIGIEM---
+ *
  * - bron ma jakis image
  * - kazda bron ma zdefiniowane jakimi pociskami strzela, ile ich ma, i ile zajmuje przeladowanie
  * - bron ktora lezy gdzies sie na mapie dostaje jakas pozycje x i y, oraz jest wyswietlana

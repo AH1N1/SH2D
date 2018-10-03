@@ -52,6 +52,16 @@ class Lvl1 extends Phaser.Scene {
             y: 500
         }];
         this.createWeapons(wc);
+
+        //Create bullets
+        let bc = [{
+            bulletType: CONSTANTS.BULLET_SINGLE,
+            bulletsToCreate: 10,
+            x: 0,
+            y: 0,
+            key: 'someWeapon'
+        }];
+        this.createBullets(bc);
     }
 
     update(time, delta) {
@@ -65,6 +75,18 @@ class Lvl1 extends Phaser.Scene {
 
     computeDistance(person, object) {
         return Phaser.Math.Distance.Between(person.x, person.y, object.x, object.y);
+    }
+
+    createBullets(bulletsConfigs) {
+        this.bullets = this.add.group(); //Dodaje grupe
+        bulletsConfigs.forEach(function (bc, index) {  // tworzy kule wedlug configow
+            for (let i = 0; i <= bc.bulletsToCreate; i++) {
+                let bullet = new SomeBullet(this, bc);
+                //ew set visible/active
+                this.bullets.add(bullet); //ew (bullet, true) gdzie true dodaje tez do sceny
+            }
+        }, this);
+
     }
 
 
