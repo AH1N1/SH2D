@@ -50,7 +50,7 @@ class SomeWeapon extends Phaser.GameObjects.Sprite {
         this.y=y;
         this.ammoLeft=ammoLeft;
         this.setVisible(true); //ew setActive()
-        this.setInteractive()
+        this.setInteractive();
         this.inUse=false;
     }
 

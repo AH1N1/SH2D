@@ -36,10 +36,38 @@ class Lvl1 extends Phaser.Scene {
 
 
         //Mouse listeners
+        //Fire event
+        this.input.on('pointerdown', function (pointer) {
+
+            let b = this.matter.add.gameObject(this.player);
+            b.setFriction(0,0);
+            let speed1 = Phaser.Math.GetSpeed(1000, 1);
+            let speed2 = Phaser.Math.GetSpeed(5, 1);
+            console.log(this.matter.world.getDelta());
+            b.setVelocityX(400/this.matter.world.getDelta());
+            // b.setVelocityX(Phaser.Math.GetSpeed(pointer.x-b.x, 1)*speed1);
+            // b.setVelocityY(Phaser.Math.GetSpeed(pointer.y-b.y, 1)*speed1);
+            // b.setVelocityX(speed1*(pointer.x-b.x)/*/Math.abs((pointer.y-b.y))*/,1);
+            // b.setVelocityY(speed1*(pointer.y-b.y)/*/Math.abs((pointer.x-b.x))*/,1);
+            b.done=true;
+
+            // this.player.fire();
+
+
+        },this);
+
+        //TODO: podswietlanie dostepnych obiektow
+        this.input.on('gameobjectmove', function (pointer, gameObject) {
+            console.log('on object');
+            gameObject.setTint(Math.random() * 16000000);
+
+        });
 
         //Create player
         this.player = new Person(this, 30, 500, 'someWeapon');
         this.add.existing(this.player);
+        // this.matter.add.gameObject(this.player);
+
 
 
         //Create weapons

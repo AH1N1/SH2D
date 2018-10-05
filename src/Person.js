@@ -7,7 +7,7 @@ class Person extends Phaser.GameObjects.Sprite {
     setAmmo(ammoType, ammoLeft) {
         this.ammo = new SomeAmmo(ammoType); // tworzy obiekt SomeAmmo ktory dla danego typu amunicji stworzy inna metode fire()
         this.ammoLeft = ammoLeft;
-        console.log('ammo set: left-' + this.ammoLeft + ', type-' + this.ammoType);
+        console.log('ammo set: left-' + this.ammoLeft + ', type-' + this.ammo);
     }
 
     //jesli ma pociski to:
@@ -25,13 +25,13 @@ class Person extends Phaser.GameObjects.Sprite {
     //          -
     //          -
     //
-    fire(scene, group, directions) {
+    fire(scene, ) {
         //tmp inside function
         let bulletsAmount = 1;
         let fireType = CONSTANTS.BULLET_SINGLE;
 
         if (this.ammoLeft > 0) {
-            this.ammo.fire(scene, ); //bierze obiekt SomeAmmo i wywoluje jego metode fire()
+            this.ammo.fire(scene, this.x, this.y, pointer.x, pointer.y, CONSTANTS.TARGET_BOT); //bierze obiekt SomeAmmo i wywoluje jego metode fire()
             // if(fireType==CONSTANTS.BULLET_SINGLE){
             //     //single wiec pobiera tylko jedna kule
             //     // let bullet =  group.find    znajdz kule

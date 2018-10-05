@@ -12,8 +12,9 @@ class SomeAmmo{
         //testowe - 1 pocisk, pojedynczy strzal prosto
         if (ammoType===CONSTANTS.SOME_AMMO){
             this.bulletsAmount=1;
-            this.fire= function (param) {
+            this.fire= function (scene, fromX, fromY, toX, toY, target) {
                 console.log("SOME_AMMO");
+                // let bullet = scene.bullets.metoda()//TODO: napisz metode ktora zwraca kule odpowiedniego typu
                 //popbierz 1 kule ktora nie jest aktywna
                 //wywolaj jej metode fire z odpowiednimi parametrami parametrami
 
